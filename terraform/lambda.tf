@@ -11,15 +11,15 @@ resource "aws_lambda_function" "jupyterhub-costs-lambda-function" {
         variables = {
             # See the docstring of the lambda function for descriptions of the env variables below.
             COMMON_TAG_KEY = "Name",
-            COMMON_TAG_VALUE = "JUPYTER_HUB_1e_cs109a-cluster_WORKER",
+            COMMON_TAG_VALUE = "JUPYTER_HUB_1b_cs109b_WORKER",
             DISTINCT_TAG_KEY = "owner"           
-            START_DATE = "2019-09-01"
+            START_DATE = "2021-02-01"
             S3_BUCKET_FOR_ALL_DATA = "atg-jupyterhub"
             S3_KEY_FOR_COST_DATA_PER_USER = "cost_data/total_cost_per_user.csv"
             S3_KEY_FOR_USAGE_DATA_PER_USER = "cost_data/daily_usage_per_user.csv"
-            EMAIL_SENDER_ADDRESS = "jgetega@fas.harvard.edu"
-            EMAIL_SENDER_NAME = "Joshua Getega"
-            EMAIL_RECIPIENTS = "jgetega@fas.harvard.edu, abarrett@fas.harvard.edu, jemanuel@fas.harvard.edu, pavlos@seas.harvard.edu, havy@g.harvard.edu"
+            EMAIL_SENDER_ADDRESS = "tylor_dodge@harvard.edu"
+            EMAIL_SENDER_NAME = "Tylor Dodge"
+            EMAIL_RECIPIENTS = "abarrett@fas.harvard.edu, tylor_dodge@harvard.edu, jemanuel@fas.harvard.edu, jguillette@fas.harvard.edu, pavlos@seas.harvard.edu, havy@g.harvard.edu"
             ATG_HELP_EMAIL_ADDRESS = "atg@fas.harvard.edu"
         }
     }
@@ -28,7 +28,7 @@ resource "aws_lambda_function" "jupyterhub-costs-lambda-function" {
 resource "aws_cloudwatch_event_rule" "jupyterhub-costs-cloudwatch-event-rule" {
   name                = "jupyterhub-costs-cloudwatch-event-rule"
   description         = "Trigger the jupyterhub costs lambda function to report usage and costs of a cluster"
-  schedule_expression = "cron(00 13 ? * 6 *)"
+  schedule_expression = "cron(00 13 ? * 6 *)" # Run at 1:00pm every Friday
 }
 
 resource "aws_cloudwatch_event_target" "jupyterhub-costs-cloudwatch-event-target" {

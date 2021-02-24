@@ -29,8 +29,12 @@ resource "aws_iam_role_policy" "jupyterhub-costs-lambda-role-policy" {
             "Action": [
                 "ec2:DescribeInstances",
                 "ce:*",
-                "s3:*",
-                "ses:*",
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:ListMultipartUploadParts",
+                "s3:AbortMultipartUpload",
+                "ses:SendEmail",
+                "ses:SendRawEmail",
                 "logs:CreateLogGroup",
                 "logs:CreateLogStream",
                 "logs:PutLogEvents"
