@@ -1,9 +1,9 @@
 resource "aws_lambda_function" "jupyterhub-costs-lambda-function" {
     filename      = "lambda_function.zip"
     function_name = "jupyterhub-lambda-costs-LambdaReportClusterUsageAndCosts"
-    role          = "${aws_iam_role.jupyterhub-costs-lambda-role.arn}"
+    role          = aws_iam_role.jupyterhub-costs-lambda-role.arn
     handler       = "lambda_function.lambda_handler"
-    source_code_hash = "${filebase64sha256("lambda_function.zip")}"
+    source_code_hash = filebase64sha256("lambda_function.zip")
     runtime = "python3.7"
     timeout = "360"
 
@@ -33,14 +33,14 @@ resource "aws_cloudwatch_event_rule" "jupyterhub-costs-cloudwatch-event-rule" {
 
 resource "aws_cloudwatch_event_target" "jupyterhub-costs-cloudwatch-event-target" {
   target_id = "jupyterhub-costs-cloudwatch-event-target"
-  rule      = "${aws_cloudwatch_event_rule.jupyterhub-costs-cloudwatch-event-rule.name}"
-  arn       = "${aws_lambda_function.jupyterhub-costs-lambda-function.arn}"
+  rule      = aws_cloudwatch_event_rule.jupyterhub-costs-cloudwatch-event-rule.name
+  arn       = aws_lambda_function.jupyterhub-costs-lambda-function.arn
 }
 
 resource "aws_lambda_permission" "jupyterhub-costs-cloudwatch-permission-to-invoke-lambda" {
     statement_id  = "AllowExecutionFromCloudWatch"
     action        = "lambda:InvokeFunction"
-    function_name = "${aws_lambda_function.jupyterhub-costs-lambda-function.function_name}"
+    function_name = aws_lambda_function.jupyterhub-costs-lambda-function.function_name
     principal     = "events.amazonaws.com"
-    source_arn    = "${aws_cloudwatch_event_rule.jupyterhub-costs-cloudwatch-event-rule.arn}"
+    source_arn    = aws_cloudwatch_event_rule.jupyterhub-costs-cloudwatch-event-rule.arn
 }

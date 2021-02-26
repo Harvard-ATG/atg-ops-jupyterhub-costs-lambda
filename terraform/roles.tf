@@ -19,7 +19,7 @@ EOF
 
 resource "aws_iam_role_policy" "jupyterhub-costs-lambda-role-policy" {
     name = "jupyterhub-lambda-costs-ReportClusterUsageAndCostsPolicy"
-    role = "${aws_iam_role.jupyterhub-costs-lambda-role.id}"
+    role = aws_iam_role.jupyterhub-costs-lambda-role.id
     policy = <<EOF
 {
     "Version": "2012-10-17",
